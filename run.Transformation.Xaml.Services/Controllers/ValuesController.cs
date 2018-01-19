@@ -18,9 +18,9 @@ namespace run.Transformation.Xaml.Services.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(string id)
         {
-            return "value";
+            return id + "server";
         }
 
         // POST api/values

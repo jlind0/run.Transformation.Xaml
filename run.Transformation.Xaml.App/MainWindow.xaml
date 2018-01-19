@@ -5,10 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:run.Transformation.Xaml.App"
         xmlns:xx="clr-namespace:run.Transformation.Xaml;assembly=run.Transformation.Xaml"
+        xmlns:clr="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-
+    <Window.Resources>
+        <clr:String x:Key="ApiBase">http://localhost:61746/api/values/</clr:String>
+    </Window.Resources>
     <StackPanel>
-        <TextBox Text="{xx:StringApiBinding 'http://localhost:61746/api/values/5'}"/>
+        <TextBox x:Name="txtId" Text="Test"></TextBox>
+        <TextBox x:Name="txtUrl">
+            <TextBox.Text>
+                <MultiBinding StringFormat="{}{0}{1}">
+                    <Binding Mode="OneWay">
+                        <Binding.Source>http://localhost:61746/api/values/</Binding.Source>
+                    </Binding>
+                    <Binding ElementName="txtId" Path="Text"/>
+                </MultiBinding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Text="{xx:StringApiBinding {Binding ElementName=txtUrl, Path=Text}}"/>
     </StackPanel>
 </Window>

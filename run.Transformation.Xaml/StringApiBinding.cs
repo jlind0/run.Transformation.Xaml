@@ -12,9 +12,9 @@ namespace run.Transformation.Xaml
     [MarkupExtensionReturnType(typeof(string))]
     public class StringApiBinding : MarkupExtension
     {
-        [ConstructorArgument("Endpoint")]
-        public Uri Endpoint { get; set; }
-        public StringApiBinding(Uri endopoint) { Endpoint = endopoint; }
+        [ConstructorArgument("endpoint")]
+        public string Endpoint { get; set; }
+        public StringApiBinding(string endopoint) { Endpoint = endopoint; }
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             HttpClient client = new HttpClient();
