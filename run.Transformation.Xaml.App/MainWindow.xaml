@@ -23,6 +23,19 @@
                 </MultiBinding>
             </TextBox.Text>
         </TextBox>
-        <TextBox Text="{xx:StringApiBinding {Binding ElementName=txtUrl, Path=Text}}"/>
+        <TextBox>
+            <TextBox.Text>
+                <xx:StringApiBinding>
+                    <xx:StringApiBinding.Endpoint>
+                        <MultiBinding StringFormat="{}{0}{1}">
+                            <Binding Mode="OneWay">
+                                <Binding.Source>http://localhost:61746/api/values/</Binding.Source>
+                            </Binding>
+                            <Binding ElementName="txtId" Path="Text"/>
+                        </MultiBinding>
+                    </xx:StringApiBinding.Endpoint>
+                </xx:StringApiBinding>
+            </TextBox.Text>
+        </TextBox>
     </StackPanel>
 </Window>
