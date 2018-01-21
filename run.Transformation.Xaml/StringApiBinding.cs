@@ -28,7 +28,7 @@ namespace run.Transformation.Xaml
                 catch { }
  
             }));
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(string), typeof(ApiConnection));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(ApiConnection));
     }
     [MarkupExtensionReturnType(typeof(string))]
     public class StringApiBinding : MarkupExtension
