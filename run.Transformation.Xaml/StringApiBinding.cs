@@ -13,19 +13,9 @@ using System.ComponentModel;
 namespace run.Transformation.Xaml
 {
     public class ApiConnection : DependencyObject
-    {
-        public string Uri
-        {
-            get { return GetValue(UriProperty) as string; }
-            set { SetValue(UriProperty, value); }
-        }
-        public string Value
-        {
-            get { return GetValue(ValueProperty) as string; }
-            set { SetValue(ValueProperty, value); }
-        }
+    {              
         public static readonly DependencyProperty UriProperty = DependencyProperty.Register(nameof(Uri), typeof(string), typeof(ApiConnection),
-            new PropertyMetadata(async (d, e) =>
+            new PropertyMetadata(null, async (d, e) =>
             {
                 var u = d.GetValue(UriProperty) as string;
                 try
@@ -50,8 +40,11 @@ namespace run.Transformation.Xaml
             ApiConnection connection = new ApiConnection();
             
             BindingOperations.SetBinding(connection, ApiConnection.UriProperty, Endpoint);
-            Binding binding = new Binding("Value");
-            BindingOperations.SetBinding(connection, ApiConnection.ValueProperty, binding);
+            Binding binding = new Binding("Value")
+            {
+                Source = connection
+            };
+            BindingOperations.SetBinding((DependencyObject)provider.TargetObject, (DependencyProperty)provider.TargetProperty, binding);
             return binding.ProvideValue(serviceProvider);
         }
         
