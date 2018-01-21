@@ -12,32 +12,17 @@ using System.ComponentModel;
 
 namespace run.Transformation.Xaml
 {
-    public class UriDependencyObject : DependencyObject
-    {
-        public string Uri
-        {
-            get { return GetValue(EndpointProperty) as string; }
-            set { SetCurrentValue(EndpointProperty, value); }
-        }
-        public static readonly DependencyProperty EndpointProperty = DependencyProperty.Register(nameof(Uri), typeof(string), typeof(UriDependencyObject));
-    }
     [MarkupExtensionReturnType(typeof(string))]
     public class StringApiBinding : MarkupExtension
     {
         public BindingBase Endpoint { get; set; }
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            UriDependencyObject obj = new UriDependencyObject();
-            BindingOperations.SetBinding(obj, UriDependencyObject.EndpointProperty, Endpoint);
-            
-            var uri = obj.GetValue(UriDependencyObject.EndpointProperty) as string;
-            HttpClient client = new HttpClient();
-            var response = client.GetAsync(uri);
-            response.Wait();
-            response.Result.EnsureSuccessStatusCode();
-            var content = response.Result.Content.ReadAsStringAsync();
-            content.Wait();
-            return content.Result;
+            IProvideValueTarget target = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+            var targetObj = target.TargetObject as DependencyObject;
+            DependencyProperty prop = DependencyProperty.Register("Uri", typeof(string), target.TargetObject.GetType());
+            BindingOperations.SetBinding(targetObj, prop, Endpoint);
+            return Endpoint.ProvideValue(serviceProvider);
         }
         
     }
